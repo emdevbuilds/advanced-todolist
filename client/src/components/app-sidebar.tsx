@@ -5,8 +5,17 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { CircleCheckBig, CirclePlus } from "lucide-react";
+import {
+  CircleCheckBig,
+  Plus,
+  CircleCheck,
+  SquareCheckBig,
+  User2,
+} from "lucide-react";
 
 export function AppSidebar() {
   return (
@@ -19,38 +28,42 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup className="pl-4">
-          <SidebarGroupContent>
-            <div className="flex items-center gap-2 text-blue-700">
-              <CirclePlus />
-              <h3 className="font-medium text-lg">Add task</h3>
+          <SidebarGroupContent className="flex flex-col gap-y-4">
+            <div className="flex items-center gap-2 text-base">
+              <Plus strokeWidth={2} />
+              <span className="">Add Task</span>
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className="pl-4">
-          <SidebarGroupContent className="">
-            <div className="flex items-center gap-2">
-              <CirclePlus />
-              <span className="font-medium text-base">Inbox</span>
+        <SidebarGroup className="px-4">
+          <SidebarGroupContent className="flex flex-col gap-y-4">
+            <div className="flex items-center gap-2 text-base">
+              <CircleCheck strokeWidth={1} />
+              <span>Tasks</span>
+              <span className="ml-auto">3</span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <CirclePlus />
-              <span className="font-medium text-base">Completed</span>
+            <div className="flex items-center gap-2 text-base">
+              <SquareCheckBig strokeWidth={1} />
+              <span className="">Completed task</span>
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {/* <SidebarGroup className="bg-green-300">
-          <SidebarGroupContent className="bg-blue-300">
-            <div className="flex items-center gap-2">
-              <h3>Add task</h3>
-              <Plus />
-            </div>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
       </SidebarContent>
-      <SidebarFooter />
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <div className="flex items-center gap-2 text-base">
+                <User2 strokeWidth={1} />
+                <span>User</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
