@@ -9,12 +9,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CircleCheckBig,
   Plus,
   CircleCheck,
   SquareCheckBig,
-  User2,
+  // User2,
 } from "lucide-react";
 
 export function AppSidebar() {
@@ -52,12 +53,15 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="p-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
               <div className="flex items-center gap-2 text-base">
-                <User2 strokeWidth={1} />
+                <Avatar>
+                  <AvatarImage src="https://githu.com/shadcn.png" />
+                  <AvatarFallback className="text-gray-800">U</AvatarFallback>
+                </Avatar>
                 <span>User</span>
               </div>
             </SidebarMenuButton>
