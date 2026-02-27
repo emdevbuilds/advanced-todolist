@@ -7,11 +7,12 @@ const DashboardLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarTrigger size={"lg"} />
-      {/* <main className="p-4">
-        <SidebarTrigger />
-      </main> */}
-      <Outlet />
+      <div className="p-4">
+        <SidebarTrigger size={"lg"} />
+      </div>
+      <main className="p-4">
+        <Outlet />
+      </main>
     </SidebarProvider>
   );
 };
