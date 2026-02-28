@@ -16,7 +16,6 @@ import {
   Plus,
   CircleCheck,
   SquareCheckBig,
-  // User2,
 } from "lucide-react";
 
 export function AppSidebar() {
