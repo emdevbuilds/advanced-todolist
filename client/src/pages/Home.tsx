@@ -1,5 +1,17 @@
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+
 const Home = () => {
-  return <div className="flex justify-center">Welcome to the home page</div>;
+  return (
+    <main>
+      <div className="flex flex-col justify-center items-center min-h-screen gap-y-4">
+        <h2 className="text-2xl">You don't have any tasks yet!</h2>
+        <Button className="ml-4">
+          Create Task <Plus />
+        </Button>
+      </div>
+    </main>
+  );
 };
 
 export default Home;
