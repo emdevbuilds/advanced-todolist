@@ -6,13 +6,15 @@ import { Outlet } from "react-router-dom";
 const DashboardLayout = () => {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <div className="p-4">
-        <SidebarTrigger size={"lg"} />
+      <div className="flex min-h-screen w-full">
+        <AppSidebar />
+        <div className="pt-4">
+          <SidebarTrigger size={"lg"} />
+        </div>
+        <main className="p-4 flex-1 overflow-auto">
+          <Outlet />
+        </main>
       </div>
-      <main className="p-4">
-        <Outlet />
-      </main>
     </SidebarProvider>
   );
 };
