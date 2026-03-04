@@ -22,7 +22,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <NavLink to="/">
+        <NavLink to="/" end>
           <div className="flex gap-x-2 items-center text-olive-800">
             <h1 className="text-2xl">Todolist</h1> <CircleCheckBig />
           </div>
