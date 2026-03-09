@@ -12,4 +12,11 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     maxLength: [200, "Description must be at most 200 characters."],
   },
+  //   completed: {
+  //     type: Boolean,
+  //     default: false,
+  //   },
+  timestamps: true,
 });
+
+export default mongoose.model("Task", TaskSchema);
