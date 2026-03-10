@@ -1,8 +1,10 @@
-import * as React from "react";
+// import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import axios from "axios";
+import { taskService } from "@/api/task";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -39,23 +41,49 @@ const AddTask = () => {
       description: "",
     },
   });
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data.description);
 
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-primary">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
-    });
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    // console.log(data.description);
+    try {
+      await taskService.create(data);
+      toast.success("Task created successfully!", {
+        position: "top-center",
+      });
+
+      form.reset();
+    } catch (error: unknown) {
+      // Check if it's an Axios error to access server response
+      if (axios.isAxiosError(error)) {
+        const serverMessage = error.response?.data?.message;
+        toast.error(serverMessage || "Failed to create task");
+      } else if (error instanceof Error) {
+        // Handle standard JS errors
+        toast.error(error.message);
+      } else {
+        // Fallback for weird edge cases
+        toast.error("An unexpected error occurred");
+      }
+
+      // 4. Handle errors (e.g., server down or validation failed)
+      // toast.error(error.response?.data?.message || "Failed to create task", {
+      //   position: "bottom-right",
+      // });
+    }
+
+    // toast("You submitted the following values:", {
+    //   description: (
+    //     <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-primary">
+    //       <code>{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    //   position: "bottom-right",
+    //   classNames: {
+    //     content: "flex flex-col gap-2",
+    //   },
+    //   style: {
+    //     "--border-radius": "calc(var(--radius)  + 4px)",
+    //   } as React.CSSProperties,
+    // });
   }
 
   return (

@@ -9,7 +9,7 @@ export const getTasks = async (req, res, next) => {
   }
 };
 
-export const createTask = async (res, req, next) => {
+export const createTask = async (req, res, next) => {
   try {
     const { title, description } = req.body;
 
