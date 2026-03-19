@@ -7,10 +7,17 @@ export interface Task {
 }
 
 export const taskService = {
+  // CREATE (POST)
   create: async (data: Task) => {
-    // Axios automatically handles JSON.stringify and res.ok checks
     const response = await api.post<Task>("/tasks", data);
     return response.data;
   },
-  // ... other methods like getAll, update, delete
+
+  // READ ALL (GET)
+  getAll: async () => {
+    const response = await api.get<{ success: boolean; data: Task[] }>(
+      "/tasks",
+    );
+    return response.data.data;
+  },
 };
