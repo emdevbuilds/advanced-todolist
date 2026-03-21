@@ -28,7 +28,7 @@ const Tasks = () => {
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen p-4">
-      <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
+      <h1 className="text-2xl font-semibold mb-4">Tasks {tasks.length}</h1>
 
       {/* 4. Map over the state, not the function call */}
       {tasks.length > 0 ? (

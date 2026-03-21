@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
+import { taskService, type Task } from "@/api/task";
 import {
   Sidebar,
   SidebarContent,
@@ -17,8 +19,26 @@ import {
   CircleCheck,
   SquareCheckBig,
 } from "lucide-react";
+import { toast } from "sonner";
 
 export function AppSidebar() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  // Fetch task
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await taskService.getAll();
+        setTasks(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+        toast.error("Failed to load tasks");
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
@@ -47,7 +67,7 @@ export function AppSidebar() {
               <div className="flex items-center gap-2 text-base">
                 <CircleCheck strokeWidth={1} />
                 <span>Tasks</span>
-                <span className="ml-auto">3</span>
+                <span className="ml-auto">{tasks.length}</span>
               </div>
             </NavLink>
             <NavLink to="/completed-tasks" end>
