@@ -3,6 +3,7 @@ import { taskService, type Task } from "@/api/task";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { formatTaskDate } from "@/utils/format-date";
+import { EllipsisVertical } from "lucide-react";
 
 const Tasks = () => {
   // 1. Create a state to hold the tasks
@@ -37,13 +38,20 @@ const Tasks = () => {
         tasks.map((task) => (
           <div
             key={task._id}
-            className="bg-white p-4 rounded-2xl shadow w-full mb-4 border border-gray-200"
+            className="flex flex-row justify-between bg-white p-6 rounded-2xl shadow w-full mb-4 border border-gray-200"
           >
-            <h2 className="text-lg font-semibold">{task.title}</h2>
-            <p className="text-gray-600 leading-6">{task.description}</p>
-            <p className="text-sm text-gray-500">
-              {formatTaskDate(task.createdAt)}
-            </p>
+            <div className="space-y-2">
+              <h2 className="text-lg font-semibold">{task.title}</h2>
+              <p className="text-muted-foreground leading-6">
+                {task.description}
+              </p>
+              <span className="text-sm text-gray-500">
+                {formatTaskDate(task.createdAt)}
+              </span>
+            </div>
+            <Button variant="ghost" size="icon">
+              <EllipsisVertical />
+            </Button>
           </div>
         ))
       ) : (
