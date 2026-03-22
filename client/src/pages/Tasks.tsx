@@ -3,7 +3,28 @@ import { taskService, type Task } from "@/api/task";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { formatTaskDate } from "@/utils/format-date";
-import { EllipsisVertical } from "lucide-react";
+import {
+  Check,
+  CopyPlus,
+  EllipsisVertical,
+  PencilLine,
+  SquareCheckBig,
+  Trash2,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Tasks = () => {
   // 1. Create a state to hold the tasks
@@ -49,9 +70,36 @@ const Tasks = () => {
                 {formatTaskDate(task.createdAt)}
               </span>
             </div>
-            <Button variant="ghost" size="icon">
-              <EllipsisVertical />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="cursor-pointer" variant="ghost" size="icon">
+                  <EllipsisVertical />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-40" align="start">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Check /> Mark as done
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <PencilLine /> Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CopyPlus /> Duplicate
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+                    <Trash2 className="text-destructive" />
+                    <span>Delete Task</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ))
       ) : (
