@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { taskService, type Task } from "@/api/task";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { formatTaskDate } from "@/utils/format-date";
 
 const Tasks = () => {
   // 1. Create a state to hold the tasks
@@ -28,17 +30,20 @@ const Tasks = () => {
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen p-4">
-      <h1 className="text-2xl font-semibold mb-4">Tasks {tasks.length}</h1>
+      <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
 
       {/* 4. Map over the state, not the function call */}
       {tasks.length > 0 ? (
         tasks.map((task) => (
           <div
             key={task._id}
-            className="bg-white p-4 rounded shadow w-full max-w-md mb-4 border border-gray-200"
+            className="bg-white p-4 rounded-2xl shadow w-full mb-4 border border-gray-200"
           >
-            <h2 className="text-xl font-bold">{task.title}</h2>
-            <p className="text-gray-600">{task.description}</p>
+            <h2 className="text-lg font-semibold">{task.title}</h2>
+            <p className="text-gray-600 leading-6">{task.description}</p>
+            <p className="text-sm text-gray-500">
+              {formatTaskDate(task.createdAt)}
+            </p>
           </div>
         ))
       ) : (
