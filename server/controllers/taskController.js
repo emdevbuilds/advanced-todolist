@@ -19,3 +19,12 @@ export const createTask = async (req, res, next) => {
     next(err);
   }
 };
+
+export const deleteTask = async (req, res, next) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "Task deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
