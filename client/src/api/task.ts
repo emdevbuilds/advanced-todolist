@@ -1,7 +1,7 @@
 import api from "./axiosInstance";
 
 export interface Task {
-  _id?: string;
+  _id: string;
   title: string;
   description: string;
   createdAt: string;
@@ -9,7 +9,7 @@ export interface Task {
 
 export const taskService = {
   // CREATE (POST)
-  create: async (data: Task) => {
+  create: async (data: Omit<Task, "_id" | "createdAt">) => {
     const response = await api.post<Task>("/tasks", data);
     return response.data;
   },
@@ -20,5 +20,11 @@ export const taskService = {
       "/tasks",
     );
     return response.data.data;
+  },
+
+  // DELETE (DELETE)
+  deleteTask: async (id: string) => {
+    const response = await api.delete(`/tasks/${id}`);
+    return response.data;
   },
 };

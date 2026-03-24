@@ -18,11 +18,37 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Tasks = () => {
-  // 1. Create a state to hold the tasks
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    if (!taskToDelete) return;
+    try {
+      console.log(taskToDelete);
+
+      await taskService.deleteTask(taskToDelete);
+      setTasks(tasks.filter((t) => t._id !== taskToDelete));
+      toast.success("Task deleted");
+      setIsDeleteDialogOpen(false);
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Delete failed");
+    }
+  };
 
   // 2. Fetch the data when the component loads
   useEffect(() => {
@@ -46,6 +72,30 @@ const Tasks = () => {
   return (
     <main className="flex flex-col justify-center items-center min-h-screen p-4">
       <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this task.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setTaskToDelete(null)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* 4. Map over the state, not the function call */}
       {tasks.length > 0 ? (
@@ -86,7 +136,14 @@ const Tasks = () => {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault(); // Stop the menu from closing immediately
+                      setTaskToDelete(task._id);
+                      setIsDeleteDialogOpen(true);
+                    }}
+                    className="text-destructive focus:text-destructive cursor-pointer"
+                  >
                     <Trash2 className="text-destructive" />
                     <span>Delete Task</span>
                   </DropdownMenuItem>
