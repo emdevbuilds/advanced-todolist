@@ -38,8 +38,6 @@ const Tasks = () => {
   const handleDelete = async () => {
     if (!taskToDelete) return;
     try {
-      console.log(taskToDelete);
-
       await taskService.deleteTask(taskToDelete);
       setTasks(tasks.filter((t) => t._id !== taskToDelete));
       toast.success("Task deleted");
@@ -50,12 +48,11 @@ const Tasks = () => {
     }
   };
 
-  // 2. Fetch the data when the component loads
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const data = await taskService.getAll();
-        setTasks(data); // 3. Update state with the results
+        setTasks(data);
       } catch (error) {
         console.error("Fetch error:", error);
         toast.error("Failed to load tasks");
@@ -65,7 +62,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, []); // Empty array means "run only once on mount"
+  }, []);
 
   if (loading) return <p>Loading tasks...</p>;
 
@@ -89,7 +86,8 @@ const Tasks = () => {
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="hover:!bg-destructive/90"
+              variant={"destructive"}
             >
               Delete
             </AlertDialogAction>
@@ -97,7 +95,6 @@ const Tasks = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* 4. Map over the state, not the function call */}
       {tasks.length > 0 ? (
         tasks.map((task) => (
           <div
@@ -138,7 +135,7 @@ const Tasks = () => {
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onSelect={(e) => {
-                      e.preventDefault(); // Stop the menu from closing immediately
+                      e.preventDefault();
                       setTaskToDelete(task._id);
                       setIsDeleteDialogOpen(true);
                     }}
