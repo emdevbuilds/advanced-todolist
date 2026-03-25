@@ -27,4 +27,10 @@ export const taskService = {
     const response = await api.delete(`/tasks/${id}`);
     return response.data;
   },
+
+  // PATCH (mark as done)
+  markAsDone: async (id: string, completed: boolean) => {
+    const response = await api.patch(`/tasks/${id}`, { completed });
+    return response.data;
+  },
 };

@@ -34,6 +34,8 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+  const [isCompletedTask, setIsCompletedTask] = useState(false);
+  const [taskToMarkAsDone, setTaskToMarkAsDone] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (!taskToDelete) return;
@@ -45,6 +47,18 @@ const Tasks = () => {
     } catch (error) {
       console.error("Delete error:", error);
       toast.error("Delete failed");
+    }
+  };
+
+  const handleMarkAsDone = async () => {
+    if (!taskToMarkAsDone) return;
+    try {
+      setIsCompletedTask(true);
+      await taskService.markAsDone(taskToMarkAsDone, isCompletedTask);
+      toast.success(`${taskToMarkAsDone} mark as done`);
+    } catch (error) {
+      console.error("Fail to mark as done:", error);
+      toast.error("Fail to mark as done");
     }
   };
 
@@ -86,7 +100,7 @@ const Tasks = () => {
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="hover:!bg-destructive/90"
+              className="hover:bg-destructive/90"
               variant={"destructive"}
             >
               Delete

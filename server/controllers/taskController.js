@@ -28,3 +28,16 @@ export const deleteTask = async (req, res, next) => {
     next(err);
   }
 };
+
+export const markTaskAsDone = async (req, res, next) => {
+  try {
+    const { completed } = req.body;
+    const task = await Task.findByIdAndUpdate(req.params.id, {
+      completed: completed,
+    });
+    await task.save();
+    res.json({ success: true, data: task });
+  } catch (err) {
+    next(err);
+  }
+};

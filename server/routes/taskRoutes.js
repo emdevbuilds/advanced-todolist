@@ -3,12 +3,12 @@ import {
   getTasks,
   createTask,
   deleteTask,
+  markTaskAsDone,
 } from "../controllers/TaskController.js";
 
 const router = Router();
 
-router.get("/", getTasks);
-router.post("/", createTask);
-router.delete("/:id", deleteTask);
+router.route("/").get(getTasks).post(createTask);
+router.route("/:id").delete(deleteTask).patch(markTaskAsDone);
 
 export default router;
