@@ -132,7 +132,13 @@ const Tasks = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40" align="start">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      setTaskToMarkAsDone(task._id);
+                      handleMarkAsDone();
+                    }}
+                    className="cursor-pointer"
+                  >
                     <Check /> Mark as done
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
