@@ -135,8 +135,8 @@ const Tasks = () => {
                   <DropdownMenuItem
                     onSelect={() => {
                       setTaskToMarkAsDone(task._id);
-                      handleMarkAsDone();
                     }}
+                    onClick={handleMarkAsDone}
                     className="cursor-pointer"
                   >
                     <Check /> Mark as done

@@ -32,10 +32,20 @@ export const deleteTask = async (req, res, next) => {
 export const markTaskAsDone = async (req, res, next) => {
   try {
     const { completed } = req.body;
-    const task = await Task.findByIdAndUpdate(req.params.id, {
-      completed: completed,
-    });
-    await task.save();
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      {
+        completed: completed,
+      },
+      { new: true, runValidators: true },
+    );
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found" });
+    }
+
     res.json({ success: true, data: task });
   } catch (err) {
     next(err);
