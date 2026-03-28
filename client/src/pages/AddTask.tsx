@@ -1,10 +1,9 @@
-// import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import axios from "axios";
-import { taskService } from "@/api/task";
+import { useTaskStore } from "@/store/useTaskStore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -34,6 +33,8 @@ const formSchema = z.object({
 });
 
 const AddTask = () => {
+  const { createTask } = useTaskStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,9 +44,8 @@ const AddTask = () => {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    // console.log(data.description);
     try {
-      await taskService.create(data);
+      await createTask(data);
       toast.success("Task created successfully!", {
         position: "top-center",
       });
