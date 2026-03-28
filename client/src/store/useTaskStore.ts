@@ -9,7 +9,7 @@ interface TaskState {
   markTaskAsDone: (id: string, isCompleted: boolean) => Promise<void>;
 }
 
-export const useTaskStore = create<TaskState>((set, get) => ({
+export const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
   loading: false,
   fetchTasks: async () => {
@@ -28,6 +28,5 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     })),
   markTaskAsDone: async (id, isCompleted) => {
     await taskService.markAsDone(id, isCompleted);
-    await get().fetchTasks();
   },
 }));

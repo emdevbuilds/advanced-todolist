@@ -31,12 +31,12 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const Tasks = () => {
-  const { tasks, loading, fetchTasks, removeTask } = useTaskStore();
+  const { tasks, loading, fetchTasks, removeTask, markTaskAsDone } =
+    useTaskStore();
   // const [tasks, setTasks] = useState<Task[]>([]);
   // const [loading, setLoading] = useState(true);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
-  const [isCompletedTask, setIsCompletedTask] = useState(false);
   const [taskToMarkAsDone, setTaskToMarkAsDone] = useState<string | null>(null);
 
   const handleDelete = async () => {
@@ -56,9 +56,10 @@ const Tasks = () => {
   const handleMarkAsDone = async () => {
     if (!taskToMarkAsDone) return;
     try {
-      setIsCompletedTask(true);
-      await taskService.markAsDone(taskToMarkAsDone, isCompletedTask);
+      // setIsCompletedTask(true);
+      await markTaskAsDone(taskToMarkAsDone, true);
       toast.success(`${taskToMarkAsDone} mark as done`);
+      setTaskToMarkAsDone(null);
     } catch (error) {
       console.error("Fail to mark as done:", error);
       toast.error("Fail to mark as done");
@@ -67,20 +68,8 @@ const Tasks = () => {
 
   useEffect(() => {
     fetchTasks();
-    // const fetchTasks = async () => {
-    //   try {
-    //     const data = await taskService.getAll();
-    //     setTasks(data);
-    //   } catch (error) {
-    //     console.error("Fetch error:", error);
-    //     toast.error("Failed to load tasks");
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchTasks();
-  }, [fetchTasks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading) return <p>Loading tasks...</p>;
 
