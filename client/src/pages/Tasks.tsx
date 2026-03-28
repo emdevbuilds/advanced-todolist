@@ -33,11 +33,8 @@ import {
 const Tasks = () => {
   const { tasks, loading, fetchTasks, removeTask, markTaskAsDone } =
     useTaskStore();
-  // const [tasks, setTasks] = useState<Task[]>([]);
-  // const [loading, setLoading] = useState(true);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
-  const [taskToMarkAsDone, setTaskToMarkAsDone] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (!taskToDelete) return;
@@ -53,13 +50,11 @@ const Tasks = () => {
     }
   };
 
-  const handleMarkAsDone = async () => {
-    if (!taskToMarkAsDone) return;
+  const handleMarkAsDone = async (taskId: string) => {
+    if (!taskId) return;
     try {
-      // setIsCompletedTask(true);
-      await markTaskAsDone(taskToMarkAsDone, true);
-      toast.success(`${taskToMarkAsDone} mark as done`);
-      setTaskToMarkAsDone(null);
+      await markTaskAsDone(taskId, true);
+      toast.success(`${taskId} mark as done`);
     } catch (error) {
       console.error("Fail to mark as done:", error);
       toast.error("Fail to mark as done");
@@ -127,9 +122,8 @@ const Tasks = () => {
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onSelect={() => {
-                      setTaskToMarkAsDone(task._id);
+                      handleMarkAsDone(task._id);
                     }}
-                    onClick={handleMarkAsDone}
                     className="cursor-pointer"
                   >
                     <Check /> Mark as done
