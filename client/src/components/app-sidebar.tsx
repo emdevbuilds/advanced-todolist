@@ -25,7 +25,8 @@ export function AppSidebar() {
 
   useEffect(() => {
     fetchTasks();
-  }, [fetchTasks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Sidebar>
