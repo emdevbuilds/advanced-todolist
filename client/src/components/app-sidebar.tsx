@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router";
-import { taskService, type Task } from "@/api/task";
+import { useTaskStore } from "@/store/useTaskStore";
 import {
   Sidebar,
   SidebarContent,
@@ -19,25 +19,13 @@ import {
   CircleCheck,
   SquareCheckBig,
 } from "lucide-react";
-import { toast } from "sonner";
 
 export function AppSidebar() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const { tasks, fetchTasks } = useTaskStore();
 
-  // Fetch task
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await taskService.getAll();
-        setTasks(data);
-      } catch (error) {
-        console.error("Fetch error:", error);
-        toast.error("Failed to load tasks");
-      }
-    };
-
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   return (
     <Sidebar>
