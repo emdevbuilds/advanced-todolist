@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { taskService, type Task } from "@/api/task";
+import { taskService } from "@/api/task";
+import { useTaskStore } from "@/store/useTaskStore";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { formatTaskDate } from "@/utils/format-date";
@@ -30,8 +31,9 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { tasks, loading, fetchTasks, removeTask } = useTaskStore();
+  // const [tasks, setTasks] = useState<Task[]>([]);
+  // const [loading, setLoading] = useState(true);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
   const [isCompletedTask, setIsCompletedTask] = useState(false);
@@ -41,9 +43,10 @@ const Tasks = () => {
     if (!taskToDelete) return;
     try {
       await taskService.deleteTask(taskToDelete);
-      setTasks(tasks.filter((t) => t._id !== taskToDelete));
+      removeTask(taskToDelete);
       toast.success("Task deleted");
       setIsDeleteDialogOpen(false);
+      setTaskToDelete(null);
     } catch (error) {
       console.error("Delete error:", error);
       toast.error("Delete failed");
@@ -63,20 +66,21 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await taskService.getAll();
-        setTasks(data);
-      } catch (error) {
-        console.error("Fetch error:", error);
-        toast.error("Failed to load tasks");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTasks();
-  }, []);
+    // const fetchTasks = async () => {
+    //   try {
+    //     const data = await taskService.getAll();
+    //     setTasks(data);
+    //   } catch (error) {
+    //     console.error("Fetch error:", error);
+    //     toast.error("Failed to load tasks");
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    // fetchTasks();
+  }, [fetchTasks]);
 
   if (loading) return <p>Loading tasks...</p>;
 
