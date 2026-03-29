@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { taskSchema, type TaskSchemaValues } from "@/schemas/taskSchema";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
 import axios from "axios";
 import { useTaskStore } from "@/store/useTaskStore";
 import { Button } from "@/components/ui/button";
@@ -20,30 +20,18 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(3, "Title must be at least 3 characters.")
-    .max(50, "Title must be at most 50 characters.")
-    .transform((val) => val.trim().replace(/\s+/g, " ")),
-  description: z
-    .string()
-    .max(200, "Description must be at most 200 characters.")
-    .transform((val) => val.trim().replace(/\s+/g, " ")),
-});
-
 const AddTask = () => {
   const { createTask } = useTaskStore();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TaskSchemaValues>({
+    resolver: zodResolver(taskSchema),
     defaultValues: {
       title: "",
       description: "",
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: TaskSchemaValues) {
     try {
       await createTask(data);
       toast.success("Task created successfully!", {
@@ -53,15 +41,13 @@ const AddTask = () => {
       form.reset();
     } catch (error) {
       console.error("Task creation failed:", error);
-      // Check if it's an Axios error to access server response
+
       if (axios.isAxiosError(error)) {
         const serverMessage = error.response?.data?.message;
         toast.error(serverMessage || "Failed to create task");
       } else if (error instanceof Error) {
-        // Handle standard JS errors
         toast.error(error.message);
       } else {
-        // Fallback for weird edge cases
         toast.error("An unexpected error occurred");
       }
     }
