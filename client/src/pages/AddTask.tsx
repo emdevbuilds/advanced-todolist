@@ -51,7 +51,8 @@ const AddTask = () => {
       });
 
       form.reset();
-    } catch (error: unknown) {
+    } catch (error) {
+      console.error("Task creation failed:", error);
       // Check if it's an Axios error to access server response
       if (axios.isAxiosError(error)) {
         const serverMessage = error.response?.data?.message;
