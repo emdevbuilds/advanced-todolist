@@ -56,7 +56,9 @@ export function AppSidebar() {
               <div className="flex items-center gap-2 text-base">
                 <CircleCheck strokeWidth={1} />
                 <span>Tasks</span>
-                <span className="ml-auto">{tasks.length}</span>
+                <span className="ml-auto">
+                  {tasks.filter((t) => !t.completed).length}
+                </span>
               </div>
             </NavLink>
             <NavLink to="/completed-tasks" end>
