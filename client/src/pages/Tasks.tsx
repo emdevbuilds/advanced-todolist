@@ -98,64 +98,70 @@ const Tasks = () => {
       </AlertDialog>
 
       {tasks.length > 0 ? (
-        tasks.map((task) => (
-          <div
-            key={task._id}
-            className="flex flex-row justify-between bg-white p-6 rounded-2xl shadow w-full mb-4 border border-gray-200"
-          >
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold">{task.title}</h2>
-              <p className="text-muted-foreground leading-6">
-                {task.description}
-              </p>
-              <span className="text-sm text-gray-500">
-                {formatTaskDate(task.createdAt)}
-              </span>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="cursor-pointer" variant="ghost" size="icon">
-                  <EllipsisVertical />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-40" align="start">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onSelect={() => {
-                      handleMarkAsDone(task._id);
-                    }}
+        tasks
+          .filter((task) => !task.completed)
+          .map((task) => (
+            <div
+              key={task._id}
+              className="flex flex-row justify-between bg-white p-6 rounded-2xl shadow w-full mb-4 border border-gray-200"
+            >
+              <div className="space-y-2">
+                <h2 className="text-lg font-semibold">{task.title}</h2>
+                <p className="text-muted-foreground leading-6">
+                  {task.description}
+                </p>
+                <span className="text-sm text-gray-500">
+                  {formatTaskDate(task.createdAt)}
+                </span>
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
                     className="cursor-pointer"
+                    variant="ghost"
+                    size="icon"
                   >
-                    <Check /> Mark as done
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <PencilLine /> Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CopyPlus /> Duplicate
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      setTaskToDelete(task._id);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                    className="text-destructive focus:text-destructive cursor-pointer"
-                  >
-                    <Trash2 className="text-destructive" />
-                    <span>Delete Task</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        ))
+                    <EllipsisVertical />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40" align="start">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        handleMarkAsDone(task._id);
+                      }}
+                      className="cursor-pointer"
+                    >
+                      <Check /> Mark as done
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <PencilLine /> Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <CopyPlus /> Duplicate
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        setTaskToDelete(task._id);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                      className="text-destructive focus:text-destructive cursor-pointer"
+                    >
+                      <Trash2 className="text-destructive" />
+                      <span>Delete Task</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ))
       ) : (
         <p>No tasks found.</p>
       )}
