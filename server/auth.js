@@ -1,27 +1,27 @@
 import "dotenv/config";
 import { betterAuth } from "better-auth";
+import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import mongoose from "mongoose";
 
 export const auth = betterAuth({
-  // It's crucial to set your app's base URL
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5000",
-  secret: process.env.BETTER_AUTH_SECRET, // A strong random string
+  secret: process.env.BETTER_AUTH_SECRET,
 
-  // Connect to your existing MongoDB database
-  database: mongooseAdapter(mongoose.connection),
+  // Use a getter to ensure we grab the connection AFTER it's established
+  database: mongodbAdapter(mongoose.connection.db, {
+    client: mongoose.connection.getClient(),
+  }),
 
-  // Enable the built-in email & password provider
   emailAndPassword: {
     enabled: true,
   },
 
-  // Optional: Add social providers like Google
-  // socialProviders: {
-  //     google: {
-  //         clientId: process.env.GOOGLE_CLIENT_ID,
-  //         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  //     },
-  // },
+  // Important: Better Auth uses "user" by default.
+  // If your existing Mongoose models use "User",
+  // match that name here.
+  user: {
+    modelName: "users",
+  },
 
-  // Define which origins are allowed to access your API
   trustedOrigins: [process.env.FRONTEND_URL || "http://localhost:5173"],
 });
