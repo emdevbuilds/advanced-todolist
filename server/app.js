@@ -4,12 +4,17 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { auth } from "./auth.js";
+import { toNodeHandler } from "better-auth/node";
 
 const app = express();
 
 // MIDDLEWARE
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
+
+// BETTER AUTH ROUTES
+app.all("/api/auth/*", toNodeHandler(auth));
 
 // ROUTES
 app.use("/api/tasks", taskRoutes);
