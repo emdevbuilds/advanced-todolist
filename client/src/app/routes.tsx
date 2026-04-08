@@ -5,15 +5,27 @@ import AddTask from "@/pages/AddTask";
 import Tasks from "@/pages/Tasks";
 import CompletedTasks from "@/pages/CompletedTasks";
 import User from "@/pages/User";
+import Login from "@/pages/Login";
+import Inbox from "@/pages/Inbox";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "dashboard",
     element: <DashboardLayout />,
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Inbox />,
       },
       {
         path: "/add-task",
