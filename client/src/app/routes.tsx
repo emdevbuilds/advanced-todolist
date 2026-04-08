@@ -12,12 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "dashboard",
@@ -28,19 +26,19 @@ const router = createBrowserRouter([
         element: <Inbox />,
       },
       {
-        path: "/add-task",
+        path: "add-task",
         element: <AddTask />,
       },
       {
-        path: "/tasks",
+        path: "tasks",
         element: <Tasks />,
       },
       {
-        path: "/completed-tasks",
+        path: "completed-tasks",
         element: <CompletedTasks />,
       },
       {
-        path: "/user",
+        path: "user",
         element: <User />,
       },
     ],
