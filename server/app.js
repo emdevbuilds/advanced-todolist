@@ -4,7 +4,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-import { auth } from "./auth.js";
+import { auth } from "./lib/auth.js";
 import { toNodeHandler } from "better-auth/node";
 
 const app = express();
