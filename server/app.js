@@ -11,15 +11,13 @@ const app = express();
 
 // MIDDLEWARE
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-app.use(express.json());
 
 // BETTER AUTH ROUTES
 app.all("/api/auth/*", toNodeHandler(auth));
 
-// ROUTES
-app.use("/api/tasks", taskRoutes);
+app.use(express.json());
 
-// ERROR HANDLER
+app.use("/api/tasks", taskRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
