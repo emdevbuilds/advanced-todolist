@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 // BETTER AUTH ROUTES
-app.all("/api/auth/*", toNodeHandler(auth));
+app.all("/api/auth/{*path}", toNodeHandler(auth));
 
 app.use(express.json());
 
