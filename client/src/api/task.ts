@@ -4,34 +4,38 @@ export interface Task {
   _id: string;
   title: string;
   description: string;
+  completed: boolean;
+  userId: string;
   createdAt: string;
-  completed?: boolean;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
 }
 
 export const taskService = {
-  // CREATE (POST)
-  create: async (data: Omit<Task, "_id" | "createdAt">) => {
-    const response = await api.post<Task>("/tasks", data);
-    return response.data;
-  },
-
-  // READ ALL (GET)
-  getAll: async () => {
-    const response = await api.get<{ success: boolean; data: Task[] }>(
-      "/tasks",
-    );
+  create: async (data: { title: string; description: string }) => {
+    const response = await api.post<ApiResponse<Task>>("/tasks", data);
     return response.data.data;
   },
 
-  // DELETE (DELETE)
+  getAll: async () => {
+    const response = await api.get<ApiResponse<Task[]>>("/tasks");
+    return response.data.data;
+  },
+
   deleteTask: async (id: string) => {
-    const response = await api.delete(`/tasks/${id}`);
+    const response = await api.delete<{ success: boolean; message: string }>(
+      `/tasks/${id}`,
+    );
     return response.data;
   },
 
-  // PATCH (mark as done)
   markAsDone: async (id: string, completed: boolean) => {
-    const response = await api.patch(`/tasks/${id}`, { completed });
-    return response.data;
+    const response = await api.patch<ApiResponse<Task>>(`/tasks/${id}`, {
+      completed,
+    });
+    return response.data.data;
   },
 };
