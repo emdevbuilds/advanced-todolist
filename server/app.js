@@ -12,15 +12,14 @@ const app = express();
 // MIDDLEWARE
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
-// BETTER AUTH ROUTES
-app.all("/api/auth/{*path}", toNodeHandler(auth));
-
-app.use(express.json());
-
 app.use("/api/tasks", taskRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 connectDB().then(() => {
+  // BETTER AUTH ROUTES
+  app.all("/api/auth/{*path}", toNodeHandler(auth()));
+  app.use(express.json());
+
   app.listen(port, () => console.log(`Server on port ${port}`));
 });
