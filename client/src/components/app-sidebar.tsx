@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useTaskStore } from "@/store/useTaskStore";
 import {
   Sidebar,
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 export function AppSidebar() {
+  const { logout } = useAuthStore();
   const { tasks, fetchTasks } = useTaskStore();
 
   useEffect(() => {
@@ -82,6 +84,15 @@ export function AppSidebar() {
                     <AvatarFallback className="text-gray-800">U</AvatarFallback>
                   </Avatar>
                   <span>User</span>
+                </div>
+              </NavLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <NavLink onClick={logout} to="/login" end>
+                <div className="flex items-center gap-2 text-base text-red-500">
+                  <span>Logout</span>
                 </div>
               </NavLink>
             </SidebarMenuButton>
