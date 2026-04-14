@@ -6,7 +6,7 @@ interface TaskState {
   loading: boolean;
   createTask: (data: { title: string; description: string }) => Promise<void>;
   fetchTasks: () => Promise<void>;
-  removeTask: (id: string) => void;
+  removeTask: (id: string) => Promise<void>;
   markTaskAsDone: (id: string, isCompleted: boolean) => Promise<void>;
 }
 
@@ -32,12 +32,17 @@ export const useTaskStore = create<TaskState>((set) => ({
     }
   },
 
-  removeTask: (id) =>
+  removeTask: async (id) => {
+    await taskService.deleteTask(id);
     set((state) => ({
       tasks: state.tasks.filter((t) => t._id !== id),
-    })),
+    }));
+  },
 
   markTaskAsDone: async (id, isCompleted) => {
-    await taskService.markAsDone(id, isCompleted);
+    const updatedTask = await taskService.markAsDone(id, isCompleted);
+    set((state) => ({
+      tasks: state.tasks.map((t) => (t._id === id ? updatedTask : t)),
+    }));
   },
 }));
